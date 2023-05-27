@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chess Sword</title>
+    <link href="/views/style.css" rel="stylesheet" type="text/css">
+    <style>
+      body {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+      .option {
+        margin-bottom: 20px;
+      }
+      h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: normal;
+      }
+      input[type="color"],
+      input[type="range"] {
+        width: 100%;
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background-color: #ddd;
+        outline: none;
+        margin-top: 5px;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: #4CAF50;
+        cursor: pointer;
+      }
+      input[type="range"]::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: #4CAF50;
+        cursor: pointer;
+      }
+      #max-depth {
+        display: inline-block;
+        margin-left: 10px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="option">
+      <h3 for="color-picker-input">Engine Move Highlight Color:</h3>
+      <input type="color" id="color-picker-input" name="color-picker-input">
+    </div>
+    <div class="option">
+      <h3>Max Engine Solve Depth:</h3>
+      <input type="range" min="3" max="35" value="25" class="slider" id="max-depth-input">
+      <span id="max-depth">25</span>
+    </div>
+    <script src="/lib/jquery.js"></script>
+    <script src="/views/options.js"></script>
+  </body>
+</html>

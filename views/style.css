@@ -1,0 +1,258 @@
+body {
+  background-color: #262421;
+  color: #fff;
+  width: 250px;
+}
+
+.container {
+  display: grid;
+}
+
+.top-settings {
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.blob {
+  background: black;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  margin-top: 16px;
+  margin-bottom: 0px;
+  margin-right: 5px;
+  height: 10px;
+  width: 10px;
+  transform: scale(1);
+  animation: pulse-black 2s infinite;
+  line-height: 1px;
+  vertical-align: middle;
+  position: fixed;
+  right: 10px;
+}
+
+.status-div {
+  position: fixed;
+  right: 30px;
+}
+
+#status {
+  text-align: left;
+}
+
+.blob.green {
+  background: limegreen;
+  box-shadow: 0 0 0 0 limegreen;
+  animation: none;
+}
+
+@keyframes pulse-green {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(51, 217, 178, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 5px rgba(51, 217, 178, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
+  }
+}
+
+input[type="checkbox"] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+label {
+  cursor: pointer;
+  width: 50px;
+  height: 25px;
+  background: grey;
+  border-radius: 25px;
+  position: relative;
+  display: inline-block;
+  line-height: 1px;
+  vertical-align: middle;
+  margin-top: 8px;
+}
+
+label:after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 23px;
+  height: 23px;
+  background: #fff;
+  border-radius: 23px;
+  transition: 0.3s;
+}
+
+input:checked + label {
+  background: #bada55;
+}
+
+input:checked + label:after {
+  left: calc(100% - 1px);
+  transform: translateX(-100%);
+}
+
+label:active:after {
+  width: 30px;
+}
+
+.evaluation-bar {
+  height: 15px;
+  width: 95%;
+  background: linear-gradient(to right, white 0%, white 50%, #403d39 50%, #403d39 100%);
+  border-radius: 3px;
+}
+
+.evaluation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.evaluation {
+  color: white;
+  font-size: 15px; /* increase the font size */
+  font-family: sans-serif; /* specify a sans-serif font */
+  margin-top: 0px;
+}
+
+hr {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.1;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 4px;
+  font-weight: 600;
+  margin: 0 10px;
+  width: 180px;
+  padding: 10px 0;
+  box-shadow: 0 0 20px rgba(104, 85, 224, 0.2);
+  transition: 0.4s;
+}
+
+.reg {
+  color: white;
+  background-color: rgba(104, 85, 224, 1);
+  justify-self: center;
+}
+
+.lock {
+  background: gray;
+  border-radius: 3px;
+  width: 25px;
+  height: 20px;
+  margin-top: 20px;
+  margin-left: 45%;
+  position: relative;
+}
+
+.lock:before {
+  content: "";
+  display: block;
+  position: absolute;
+  border: 3px solid gray;
+  top: -14px;
+  left: 2.3px;
+  width: 15px;
+  height: 27px;
+  border-radius: 35px 35px 0 0;
+}
+
+.opening-moves-list {
+  padding: 6px;
+  margin-top: 0px;
+}
+
+.opening-moves-list-item {
+  display: flex;
+  padding-top: 3px;
+}
+
+.opening-move-san {
+  text-align: left;
+  float: left;
+  width: 20%;
+}
+
+.opening-move-total-games {
+  text-align: right;
+  float: right;
+  width: 25%;
+  margin-right: 20px;
+}
+
+.opening-win-stats-bar {
+  display: flex;
+  height: 16px;
+  width: 100%;
+  float: right;
+}
+
+.opening-win-stats-white {
+  color: #8b8987;
+  border-radius: 0.2rem 0 0 0.2rem;
+}
+
+.opening-win-stats-draw {
+  background-color: #777574;
+  color: #bebdb9;
+  text-align: center;
+}
+
+.opening-win-stats-black {
+  color: #8b8987;
+  text-align: right;
+  border-radius: 0 0.2rem 0.2rem 0;
+}
+
+.opening-win-stats-percent-label {
+  font-weight: 600;
+  padding: 0 5px;
+}
+
+.color-option {
+  display: inline-flex;
+  align-items: left;
+}
+
+.max-depth-option {
+  display: inline-flex;
+  align-items: left;
+}
+
+#color-picker-input {
+  margin-top: 10px;
+  margin-left: 5px;
+  size: 10px;
+}
+
+#max-depth-input {
+  margin-top: 18px;
+  margin-left: 8px;
+  size: 10px;
+  height: 15px;
+  width: 20;
+}
+
+#max-depth {
+  margin-top: 12px;
+  margin-left: 8px;
+  font-size: large;
+}

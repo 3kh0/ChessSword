@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Chess Sword</title>
+    <link href="/views/style.css" rel="stylesheet" type="text/css" />
+    <script src="/lib/jquery.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-settings">
+        <input type="checkbox" id="switch" /><label for="switch"></label>
+        <div class="status-div"><p id="status">Loading...</p></div>
+        <div class="blob green"></div>
+      </div>
+      <div class="evaluation-container">
+        <div class="evaluation-bar"></div>
+        <p class="evaluation">+0.0</p>
+      </div>
+      <hr />
+      <div>
+        <h3 style="display: inline-block; align-items: center; margin-bottom: 1px; padding-left: 5px;">Opening Book</h3>
+      </div>
+      <ul class="opening-moves-list" id="opening-moves-list"></ul>
+    </div>
+    <script src="/views/popup.js"></script>
+  </body>
+</html>

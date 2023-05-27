@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Chess.com BestMove",
+  "version": "1.0",
+  "author": "3kh0",
+  "description": "Chess bot using stockfish to highlight the best moves on Chess.com",
+  "permissions": ["activeTab", "storage"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.chess.com/play/*", "https://www.chess.com/game/*", "https://www.chess.com/puzzles/*", "https://www.chess.com/analysis/*", "https://www.chess.com/daily-chess-puzzle/*"],
+      "js": ["lib/jquery.js", "content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "bg-loader.js"
+  },
+  "options_ui": {
+    "page": "views/options.html",
+    "open_in_tab": false
+  },
+  "action": {
+    "default_popup": "views/popup.html",
+    "default_title": "Chess bot using stockfish to highlight the best moves on Chess.com",
+    "default_icon": {
+      "16": "icons/favicon-16x16.png",
+      "32": "icons/favicon-32x32.png"
+    }
+  },
+  "icons": {
+    "16": "icons/favicon-16x16.png",
+    "32": "icons/favicon-32x32.png",
+    "48": "icons/favicon-48x48.png",
+    "128": "icons/icon128.png"
+  }
+}
