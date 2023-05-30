@@ -11,6 +11,13 @@
 // =======================================
 
 console.log('Loaded content.js');
+
+/**
+ * Returns a promise that resolves when an element matching the given selector is found in the DOM.
+ *
+ * @param {string} selector - The CSS selector for the element to wait for.
+ * @return {Promise<Element>} A promise that resolves with the first element matching the given selector.
+ */
 function waitForElm(selector) {
   return new Promise((resolve) => {
     if (document.querySelector(selector)) {
@@ -32,6 +39,15 @@ function waitForElm(selector) {
 last_opening_name = null;
 last_solve_time = 0;
 
+/**
+ * Updates the current openings by making a GET request to the Lichess API and 
+ * storing the result in the Chrome storage. The function constructs the URL 
+ * with the query parameters, logs a message to the console, and handles the 
+ * response using promises. If there is an error, it logs the error to the 
+ * console and sets the openings to null in the Chrome storage.
+ *
+ * @param {string} fen - The Forsyth–Edwards Notation of the current board position
+ */
 function updateCurrentOpenings(fen) {
   // Construct the URL with the query parameters
   const url = `https://explorer.lichess.ovh/masters?fen=${encodeURIComponent(fen)}`;
@@ -66,7 +82,13 @@ function updateCurrentOpenings(fen) {
     });
 }
 
-// Each piece div class looks like this: 'piece wp square-61'. Parse the info from it.
+/**
+ * Parses a piece class name to obtain its type, position, and color, and returns
+ * an object with these properties.
+ *
+ * @param {string} piece_class_name - The class name of the piece to be parsed.
+ * @return {Object} An object with the type, row, column, and color of the piece.
+ */
 function parsePiecePosition(piece_class_name) {
   var tokens = piece_class_name.split(" ");
   var piece_type = tokens.find(function (token) {
@@ -93,7 +115,11 @@ function parsePiecePosition(piece_class_name) {
   };
 }
 
-// Returns 2d matrix of pieces on the board. [0][0] = a8.
+/**
+ * Returns a 2d matrix representing the current positions of all pieces on the chess board. [0][0] = a8.
+ *
+ * @return {Array<Array<number>>} A 2D array with numeric values representing the current positions of all pieces on the chess board.
+ */
 function getPiecePositionMatrix() {
   var pieces = $.makeArray($('chess-board > div[class^="piece"]'));
   var piece_matrix = [...Array(8)].map((e) => Array(8).fill(0));
@@ -104,6 +130,17 @@ function getPiecePositionMatrix() {
   return piece_matrix;
 }
 
+/**
+ * Returns a string representing the allowed castling options based on the 
+ * current state of the chessboard.
+ *
+ * @param {void} 
+ * @return {string} A string representing the allowed castling options. 
+ * The string contains a combination of K, Q, k, and q characters, 
+ * which represent white kingside, white queenside, black kingside, 
+ * and black queenside castling, respectively. If no castling is allowed, 
+ * the function returns a hyphen (-) character.
+ */
 function getFENCastlingString() {
   var piece_matrix = getPiecePositionMatrix();
   options = "";
@@ -129,10 +166,23 @@ function getFENCastlingString() {
   return options != "" ? options : "-";
 }
 
+/**
+ * Returns the starting FEN string for a standard chess game.
+ *
+ * @return {string} The FEN string representing the starting position.
+ */
 function getStartingFenString() {
+  // I still wonder why I did it like this, i am too tired for this
   return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 }
 
+/**
+ * Returns the FEN string representation of the current state of the chessboard.
+ *
+ * @param {string|null} active_player_color - The color of the active player. If null,
+ * the active player color is determined by calling getPlayerColor().
+ * @return {string} The FEN string representation of the current state of the chessboard.
+ */
 function getFENString(active_player_color = null) {
   if (active_player_color == null) {
     var active_player_color = getPlayerColor();
@@ -168,22 +218,49 @@ function getFENString(active_player_color = null) {
   return fen;
 }
 
+/**
+ * Removes all move highlights from the chess board.
+ *
+ * @return {void} 
+ */
 function clearMoveHighlights() {
   $('chess-board > div[id="move-highlight"]').remove();
 }
 
+/**
+ * Removes highlights on the chess board for open book moves.
+ *
+ * @return {void} This function does not return a value.
+ */
 function clearOpenBookMoveHighlights() {
   $('chess-board > div[move_type="open-book"]').remove();
 }
 
+/**
+ * Checks if there is a highlighted move in the open book.
+ *
+ * @return {boolean} Returns true if there is a highlighted move in the open book, otherwise false.
+ */
 function isOpenBookMoveHighlighted() {
   return $('chess-board > div[move_type="open-book"]').length > 0;
 }
 
+/**
+ * Determines if there is a highlighted move made by the engine on the chess board.
+ *
+ * @return {boolean} true if there is a highlighted move made by the engine, false otherwise.
+ */
 function isEngineMoveHighlighted() {
   return $('chess-board > div[move_type="engine"]').length > 0;
 }
 
+/**
+ * Highlights a move on a chess board with a given color and move type.
+ *
+ * @param {string} move - A string representing the move in algebraic notation.
+ * @param {string} color - A string representing the color of the highlight.
+ * @param {string} move_type - A string representing the type of move to highlight.
+ */
 function _highlightMove(move, color, move_type) {
   clearMoveHighlights();
 
@@ -200,6 +277,13 @@ function _highlightMove(move, color, move_type) {
   $("chess-board").prepend(div);
 }
 
+/**
+ * Highlights the given move based on the move type.
+ *
+ * @param {string} move - The move to be highlighted.
+ * @param {string} [move_type="engine"] - The type of move to be highlighted.
+ * @return {undefined} This function does not return anything.
+ */
 function highlightMove(move, move_type = "engine") {
   if (move_type == "engine") {
     chrome.storage.local.get(["engine_highlight_color"], function (result) {
@@ -210,6 +294,11 @@ function highlightMove(move, move_type = "engine") {
   }
 }
 
+/**
+ * Determines if it is a new game by checking if the initial position of the pieces is set.
+ *
+ * @return {boolean} true if it is a new game, otherwise false.
+ */
 function isNewGame() {
   var piece_matrix = getPiecePositionMatrix();
   for (i = 0; i < 8; i++) {
@@ -227,14 +316,29 @@ function isNewGame() {
   return true;
 }
 
+/**
+ * Returns the color of the player based on the class name of the chess board element.
+ *
+ * @return {string} The color of the player ("b" for black, "w" for white).
+ */
 function getPlayerColor() {
   return document.querySelector("chess-board").className.includes("flipped") ? "b" : "w";
 }
 
+/**
+ * Returns the opposite color of the current player's color.
+ *
+ * @return {string} The opposite color of the current player's color.
+ */
 function getOpponentColor() {
   return getPlayerColor() == "w" ? "b" : "w";
 }
 
+/**
+ * Returns the opposite color of the current player's color.
+ *
+ * @return {string} The opposite color of the current player's color.
+ */
 function storePlayerColor() {
   var color = getPlayerColor();
   chrome.storage.local.set({
@@ -242,6 +346,12 @@ function storePlayerColor() {
   });
 }
 
+/**
+ * Resets the game to its initial state. 
+ *
+ * @param {none} 
+ * @return {none} 
+ */
 function newGameReset() {
   console.log("New Game!");
   storePlayerColor();
@@ -258,6 +368,12 @@ function newGameReset() {
   updateCurrentOpenings(getStartingFenString());
 }
 
+/**
+ * Determines if a given class name is in the correct format for a piece.
+ *
+ * @param {string} class_name - The class name to check.
+ * @return {boolean} Returns true if the class name is in the correct format, false otherwise.
+ */
 function isPieceClassName(class_name) {
   var tokens = class_name.split(" ");
   if (tokens.length != 3) {
@@ -272,6 +388,16 @@ function isPieceClassName(class_name) {
   return piece_type != undefined && piece_position != undefined;
 }
 
+/**
+ * Attaches a MutationObserver to the chess board, allowing for detection of piece movement and board resets.
+ *
+ * @param {Object} observer_config - Configuration options for the MutationObserver.
+ * @param {boolean} observer_config.attributes - Whether or not to observe attribute changes.
+ * @param {boolean} observer_config.subtree - Whether or not to observe subtree changes.
+ * @param {boolean} observer_config.attributeOldValue - Whether or not to record the old values of attributes.
+ * @param {Array<string>} observer_config.attributeFilter - An array of attribute names to watch for changes.
+ * @return {void} No return value.
+ */
 function attachPieceObserverToBoard() {
   var observer_config = {
     attributes: true,
@@ -323,6 +449,12 @@ function attachPieceObserverToBoard() {
   observer.observe(board, observer_config);
 }
 
+/**
+ * Calls the "newGameReset" function and attaches a piece observer to the board.
+ *
+ * @param {} 
+ * @return {} 
+ */
 function main() {
   newGameReset();
   attachPieceObserverToBoard();

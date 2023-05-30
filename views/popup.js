@@ -12,18 +12,34 @@
 
 const toggle = document.getElementById('switch');
 
+/**
+ * Set the disabled status light.
+ *
+ * @return {undefined} This function does not return anything.
+ */
 function setDisabledStatusLight() {
   $('.blob').css('background', 'red');
   $('.blob').css('animation', 'none');
   $('#status').text('Disabled');
 }
 
+/**
+ * Sets the status light to idle and stops its animation.
+ *
+ * @return {void} This function does not return anything.
+ */
 function setIdleStatusLight() {
   $('.blob').css('animation', 'none');
   $('.blob').css('background', 'limegreen');
   $('#status').text('Idle');
 }
 
+/**
+ * Sets the solving status light by adding a green pulsating animation to the `.blob` element,
+ * changing its background color to limegreen, and updating the text of the `#status` element to "Solving...".
+ *
+ * @return {void} This function does not return anything.
+ */
 function setSolvingStatusLight() {
   $('.blob').css('animation', 'pulse-green 0.5s infinite');
   $('.blob').css('background', 'limegreen');
@@ -39,6 +55,13 @@ chrome.storage.local.get(['enabled'], result => {
   }
 });
 
+/**
+ * Sends a message to the active tab in the current window using Chrome API.
+ *
+ * @param {object} message - The message object to send.
+ * @param {function} [callback=() => {}] - A callback function to execute after the message is sent.
+ * @return {void}
+ */
 function messageActiveTab(message, callback=() => {}) {
   chrome.tabs.query({ active: true, currentWindow: true }, 
     function(tabs) {
@@ -72,10 +95,21 @@ messageActiveTab(
   }
 )
 
+/**
+ * Returns the result of the sigmoid function, given an input value.
+ *
+ * @param {number} z - The input value for the sigmoid function.
+ * @return {number} The result of the sigmoid function.
+ */
 function sigmoid(z) {
   return 1 / (1 + Math.exp(-z / 300));
 }
 
+/**
+ * Updates the engine evaluation bar with the latest information from chrome storage.
+ *
+ * @return {undefined}
+ */
 function updateEngineEvaluationBar() {
   chrome.storage.local.get(['player_color', 'solver_result'], result => {
     if (result.player_color) {
@@ -148,6 +182,13 @@ toggle.addEventListener("change", function() {
   }
 });
 
+/**
+ * Generates an HTML element representing an opening book entry with win statistics for a given player color.
+ *
+ * @param {Object} opening_move - Object containing statistics for the opening move, including 'san', 'uci', 'white', 'black', and 'draws'.
+ * @param {string} player_color - The color of the player for whom to generate the win statistics.
+ * @return {jQuery Object} The HTML element representing the opening book entry.
+ */
 function generateOpeningBookElement(opening_move, player_color) {
   var left_color = player_color == 'w' ? '#fff' : '#403d39';
   var right_color = player_color == 'w' ? '#403d39' : '#fff';
@@ -197,6 +238,15 @@ function generateOpeningBookElement(opening_move, player_color) {
   return element;
 }
 
+/**
+ * Updates the list of opening book moves displayed to the user. Retrieves the
+ * necessary data from local storage, including the list of moves and the player's
+ * color. If there is no data stored, displays a message stating that there is no 
+ * opening book data available.
+ *
+ * @param {Object} result - An object containing the 'openings' and 'player_color' keys
+ * @return {void} This function does not return anything
+ */
 function updateOpeningBookMoves() {
   chrome.storage.local.get(['openings', 'player_color'], result => {
     var opening_book_moves = $('#opening-moves-list');

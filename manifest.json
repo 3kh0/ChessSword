@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Chess.com BestMove",
-  "version": "1.0",
+  "name": "Chess Sword",
+  "version": "1.1",
   "author": "3kh0",
   "description": "Chess bot using stockfish to highlight the best moves on Chess.com",
   "permissions": ["activeTab", "storage"],

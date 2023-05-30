@@ -256,3 +256,14 @@ button {
   margin-left: 8px;
   font-size: large;
 }
+
+a, a:visited {
+  color: white;
+}
+
+#update {
+  display: none;
+  margin-top: 5px;
+  size: 10px;
+  text-align: center;
+}
